@@ -100,6 +100,7 @@ public class MainWindow extends JFrame {
     private final MapViewDrawing mapViewDrawing;
     private final BasicDrawing basicDrawing;
 
+    //
     private final GraphPalette basicPalette, blackAndWhitePalette;
     private GraphPalette currentPalette;
 
