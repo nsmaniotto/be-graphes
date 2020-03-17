@@ -197,17 +197,38 @@ public class Path {
      * </ul>
      * 
      * @return true if the path is valid, false otherwise.
-     * 
-     * @deprecated Need to be implemented.
      */
     public boolean isValid() {
     	boolean isEmpty = false;
-    	boolean isSingle = false;
-    	boolean isLogical = false;
+    	boolean hasSingleNode = false;
+    	boolean isLogic = false;
 
+    	/* it is empty */
+    	isEmpty = this.isEmpty();
     	
+    	/* it contains a single node (without arcs) */
+    	hasSingleNode = (this.size() == 1) && !this.origin.hasSuccessors();
+
+    	/* 
+    	 * the first arc has for origin the origin of the path and, for two
+    	 * consecutive arcs, the destination of the first one is the origin of the
+    	 * second one.
+    	 */
+    	if(!isEmpty) {
+    		isLogic = true;
+    		
+    		Node destination = this.origin;
+    		
+    		for(Arc a: arcs) {
+    			if(a.getOrigin() == destination) {
+    				destination = a.getDestination();
+    			} else {
+    				isLogic = false;
+    			}
+    		}
+    	}
     	
-        return isEmpty || isSingle || isLogical;
+        return isEmpty || hasSingleNode || isLogic;
     }
 
     /**
