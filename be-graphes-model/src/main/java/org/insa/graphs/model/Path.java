@@ -3,6 +3,7 @@ package org.insa.graphs.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Iterator;
 
 /**
  * <p>
@@ -29,13 +30,56 @@ public class Path {
      * 
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
      *         consecutive nodes in the list are not connected in the graph.
-     * 
-     * @deprecated Need to be implemented.
      */
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
+    	if(nodes.size() == 0) {
+    		return new Path(graph);
+    	} else if(nodes.size() == 1) {
+    		return new Path(graph, nodes.get(0));
+    	}
+    	
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
+        
+        Node currentNode = null;
+        Node nextNode = null;
+        Arc nextArc = null;
+        List<Arc> successors;
+        
+        /* On parcours tous les noeuds donnés */
+        Iterator<Node> iteratorNode = nodes.iterator() ;
+        
+        while(iteratorNode.hasNext()){
+        	nextArc = null;
+        	
+        	if(currentNode == null) {
+        		currentNode = iteratorNode.next();
+        	}
+        	
+        	/* Si ce n'est pas le dernier noeud */
+        	if(iteratorNode.hasNext()) {
+				nextNode = iteratorNode.next();
+			   
+				successors = currentNode.getSuccessors();
+        	   
+        		for(Arc arcSuccessor: successors) {
+        			if(arcSuccessor.getDestination().equals(nextNode)) {
+        				// Si nous n'avons pas d'arc à comparer ou si celui du successeur est plus rapide
+        				if((nextArc == null) || (arcSuccessor.getMinimumTravelTime() < nextArc.getMinimumTravelTime())) {
+        					nextArc = arcSuccessor;
+        				}
+        			}
+        		}
+        	   
+        		if(nextArc == null) {
+        			throw new IllegalArgumentException();
+        		} else {
+        			arcs.add(nextArc);
+        			currentNode = nextNode;
+        		}
+        	}
+        }
+        
         return new Path(graph, arcs);
     }
 
@@ -50,13 +94,57 @@ public class Path {
      * 
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
      *         consecutive nodes in the list are not connected in the graph.
-     * 
-     * @deprecated Need to be implemented.
      */
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
+    	
+    	if(nodes.size() == 0) {
+    		return new Path(graph);
+    	} else if(nodes.size() == 1) {
+    		return new Path(graph, nodes.get(0));
+    	}
+    	
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
+        
+        Node currentNode = null;
+        Node nextNode = null;
+        Arc nextArc = null;
+        List<Arc> successors;
+        
+        /* On parcours tous les noeuds donnés */
+        Iterator<Node> iteratorNode = nodes.iterator() ;
+        
+        while(iteratorNode.hasNext()){
+        	nextArc = null;
+        	
+        	if(currentNode == null) {
+        		currentNode = iteratorNode.next();
+        	}
+        	
+        	/* Si ce n'est pas le dernier noeud */
+        	if(iteratorNode.hasNext()) {
+				nextNode = iteratorNode.next();
+			   
+				successors = currentNode.getSuccessors();
+        	   
+        		for(Arc arcSuccessor: successors) {
+        			if(arcSuccessor.getDestination().equals(nextNode)) {
+        				// Si nous n'avons pas d'arc à comparer ou si celui du successeur est plus court
+        				if((nextArc == null) || (arcSuccessor.getLength() < nextArc.getLength())) {
+        					nextArc = arcSuccessor;
+        				}
+        			}
+        		}
+        	   
+        		if(nextArc == null) {
+        			throw new IllegalArgumentException();
+        		} else {
+        			arcs.add(nextArc);
+        			currentNode = nextNode;
+        		}
+        	}
+        }
+        
         return new Path(graph, arcs);
     }
 
