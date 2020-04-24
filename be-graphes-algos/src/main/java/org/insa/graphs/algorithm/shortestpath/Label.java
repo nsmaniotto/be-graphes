@@ -95,7 +95,7 @@ public class Label implements Comparable<Label> {
     
     @Override
     public int compareTo(Label label) {
-        return Integer.compare(this.getNode().getId(), label.getNode().getId()) ;
+        return Double.compare(this.getCost(), label.getCost()) ;
     }
 
 }
