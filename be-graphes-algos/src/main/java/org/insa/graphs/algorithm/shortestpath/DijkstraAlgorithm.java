@@ -77,7 +77,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         			double potentialNewCost = x.getCost() + this.data.getCost(arcToY);
         			
         			// Notify all observers that a node has been reached for the first time.
-        			notifyNodeReached(arcToY.getDestination());
+        			//if (Double.isInfinite(currentCost) && Double.isFinite(potentialNewCost)) {
+                        notifyNodeReached(arcToY.getDestination());
+                    //}
         			
         			if(potentialNewCost < currentCost) {
         				
@@ -104,28 +106,35 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	
         }
         
-        // The destination has been found, notify the observers.
-        notifyDestinationReached(data.getDestination());
-        
-        /* Generate the path from the previous selected arcs, starting from the end of the path */
-        Label currentLabel = labelTab[destination];
-        Arc currentArcFromFather = currentLabel.getArcFromFather();
-        
-        while(currentArcFromFather != null) {
-        	
-        	arcPath.add(currentArcFromFather);
-        	
-        	currentLabel = labelTab[currentArcFromFather.getOrigin().getId()];
-        	
-        	currentArcFromFather = currentLabel.getArcFromFather();
-        	
+        // The solution is infeasible...
+        if(labelTab[destination].isNotMarked()) {
+            solution = new ShortestPathSolution(data, Status.INFEASIBLE);
         }
-        
-        /* Reverse our list of arcs since we started from the end of the path */
-        Collections.reverse(arcPath);
-        
-        /* Generate the path solution from our list of arcs */
-        solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcPath));
+        else {
+
+        	// The destination has been found, notify the observers.
+            notifyDestinationReached(data.getDestination());
+            
+            /* Generate the path from the previous selected arcs, starting from the end of the path */
+            Label currentLabel = labelTab[destination];
+            Arc currentArcFromFather = currentLabel.getArcFromFather();
+            
+            while(currentArcFromFather != null) {
+            	
+            	arcPath.add(currentArcFromFather);
+            	
+            	currentLabel = labelTab[currentArcFromFather.getOrigin().getId()];
+            	
+            	currentArcFromFather = currentLabel.getArcFromFather();
+            	
+            }
+            
+            /* Reverse our list of arcs since we started from the end of the path */
+            Collections.reverse(arcPath);
+            
+            /* Generate the path solution from our list of arcs */
+            solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcPath));
+        }
         
         return solution;
     }
