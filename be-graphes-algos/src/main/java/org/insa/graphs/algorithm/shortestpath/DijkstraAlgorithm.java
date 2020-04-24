@@ -64,6 +64,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	/* For every successor of x */
         	for(Arc arcToY: x.getNode().getSuccessors()) {
         		
+        		// Small test to check allowed roads...
+                if(!data.isAllowed(arcToY)) {
+                    continue;
+                }
+        			
         		Node y = arcToY.getDestination(); // get current Y
         		
         		if(labelTab[y.getId()].isNotMarked()) {
@@ -94,7 +99,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         			}
         			
         		}
-        		
+	        		
         	}
         	
         }
