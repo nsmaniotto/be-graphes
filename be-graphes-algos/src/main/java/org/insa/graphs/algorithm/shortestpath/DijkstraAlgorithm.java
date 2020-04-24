@@ -77,9 +77,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         			double potentialNewCost = x.getCost() + this.data.getCost(arcToY);
         			
         			// Notify all observers that a node has been reached for the first time.
-        			//if (Double.isInfinite(currentCost) && Double.isFinite(potentialNewCost)) {
+        			if(Double.isInfinite(currentCost) && Double.isFinite(potentialNewCost)) {
                         notifyNodeReached(arcToY.getDestination());
-                    //}
+                    }
         			
         			if(potentialNewCost < currentCost) {
         				
