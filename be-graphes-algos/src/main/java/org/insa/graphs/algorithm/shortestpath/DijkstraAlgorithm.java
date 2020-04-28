@@ -21,15 +21,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     @Override
     protected ShortestPathSolution doRun() {
         final ShortestPathData data = getInputData();
-        ShortestPathSolution solution = null;
-        
-        BinaryHeap<Label> binaryHeap = new BinaryHeap<Label>() ;
-        ArrayList<Arc> arcPath = new ArrayList<Arc>() ;
         
         final Graph graph = data.getGraph();
         final List<Node> nodes = graph.getNodes();
-        final int origin = data.getOrigin().getId();
-        final int destination = data.getDestination().getId();
         
         // Notify observers about the first event (origin processed).
         notifyOriginProcessed(data.getOrigin());
@@ -41,12 +35,24 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	labelTab[node.getId()] = new Label(node) ;
         }
         
-        labelTab[origin].setCost(0.); // Cost(s) <- 0
+        return this.doDijkstra(data, graph, labelTab);
+    }
+    
+    protected ShortestPathSolution doDijkstra(ShortestPathData data, Graph graph, Label[] labelTab) {
+    	
+    	/* INITIALISATION */
+    	
+    	ShortestPathSolution solution = null;
+        BinaryHeap<Label> binaryHeap = new BinaryHeap<Label>() ;
+        ArrayList<Arc> arcPath = new ArrayList<Arc>() ;
+        final int origin = data.getOrigin().getId();
+        final int destination = data.getDestination().getId();
+        
+    	labelTab[origin].setCost(0.); // Cost(s) <- 0
         
         binaryHeap.insert(labelTab[origin]); // Insert(s, heap)
-        
-        
-        /* ITERATIONS */
+    	
+    	/* ITERATIONS */
         
         while(labelTab[destination].isNotMarked() && !binaryHeap.isEmpty()) { // While nodes are not marked and there are nodes to mark
         	

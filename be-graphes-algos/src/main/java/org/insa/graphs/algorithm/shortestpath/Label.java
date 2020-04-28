@@ -13,13 +13,13 @@ import org.insa.graphs.model.Arc;
 public class Label implements Comparable<Label> {
 	
 	// sommet associé à ce label
-	private Node currentNode;
+	protected Node currentNode;
 	
 	// vrai lorsque le coût min de ce sommet est définitivement connu par l'algorithme
 	private boolean marked;
 	
 	// valeur courante du plus court chemin depuis l'origine vers le sommet
-	private double cost;
+	protected double cost;
 	
 	// correspond à l'arc du sommet précédent sur le chemin correspondant au plus court chemin courant
 	private Arc arcFromFather;
@@ -85,17 +85,23 @@ public class Label implements Comparable<Label> {
     	this.arcFromFather = arcFromFather;
     }
 
-
     /**
      * @return arc from the father.
      */
     public Arc getArcFromFather() {
     	return this.arcFromFather;
     }
+
+    /**
+     * @return current value of the total cost of this node.
+     */
+    public double getTotalCost() {
+    	return this.getCost();
+    }
     
     @Override
     public int compareTo(Label label) {
-        return Double.compare(this.getCost(), label.getCost()) ;
+        return Double.compare(this.getTotalCost(), label.getTotalCost()) ;
     }
 
 }
