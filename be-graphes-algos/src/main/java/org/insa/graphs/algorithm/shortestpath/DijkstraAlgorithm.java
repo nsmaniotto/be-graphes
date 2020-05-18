@@ -113,7 +113,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         }
         
         // The solution is infeasible...
-        if(labelTab[destination].isNotMarked()) {
+        if(labelTab[destination].getArcFromFather() == null) {
             solution = new ShortestPathSolution(data, Status.INFEASIBLE);
         }
         else {
