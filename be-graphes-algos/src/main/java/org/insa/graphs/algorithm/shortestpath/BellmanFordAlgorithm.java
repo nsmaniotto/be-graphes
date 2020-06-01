@@ -39,6 +39,8 @@ public class BellmanFordAlgorithm extends ShortestPathAlgorithm {
         // Actual algorithm, we will assume the graph does not contain negative
         // cycle...
         boolean found = false;
+        // Compter le nombre de noeuds visités ou marqués
+        int compteur = 0;
         for (int i = 0; !found && i < nbNodes; ++i) {
             found = true;
             for (Node node: graph.getNodes()) {
@@ -65,8 +67,12 @@ public class BellmanFordAlgorithm extends ShortestPathAlgorithm {
                         predecessorArcs[arc.getDestination().getId()] = arc;
                     }
                 }
+                
+                compteur += 1;
             }
         }
+        
+        System.out.println("Nombre de noeuds visités : " + compteur);
 
         ShortestPathSolution solution = null;
 

@@ -142,6 +142,15 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcPath));
         }
         
+        // Compter le nombre de noeuds visités ou marqués
+        int compteur = 0;
+        for(Label tag: labelTab) {
+        	if(tag.isMarked()) {
+        		compteur += 1;
+        	}
+        }
+        System.out.println("Nombre de noeuds marqués : " + compteur);
+        
         return solution;
     }
 
